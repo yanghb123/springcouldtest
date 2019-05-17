@@ -1,0 +1,8 @@
+在开启actuator之后，http://localhost:1112/actuator/bus-refresh/demo:** 是向配置总线控制刷新代码配置
+
+start "授权服务器" java -jar -Xmx300m configserverSR.jar
+
+mvn clean package
+
+
+http://localhost:1112/demo/dev

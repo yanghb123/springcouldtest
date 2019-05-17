@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: configserver
+  cloud: 
+    config:
+      server:
+        git:
+           uri: http://106.14.62.141:8081/serviceu/config-repo.git
+  rabbitmq: 
+    virtual-host: /config
+    host: 192.168.8.31
+    port: 5672
+    username: howard
+    password: 123
+  security:
+    user:
+      name: test
+      password: test
+server:
+  port: 1112
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://test:test@127.0.0.1:1110/eureka/
+management:
+  endpoints:
+    web:
+      exposure:
+        include: bus-refresh,shutdown
