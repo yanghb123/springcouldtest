@@ -1,0 +1,3 @@
+$ java -jar registercenterSR.jar
+
+这里配置了很多测试环境才需要的配置，如果要产品化的话把多余的配置删掉即可。
