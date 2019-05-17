@@ -1,0 +1,22 @@
+server:
+  port: 1113
+spring:
+  application:
+    name: ldstrubine
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://test:test@127.0.0.1:1110/eureka/
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    shutdown:
+      enabled: true
+turbine:
+  appConfig: demo
+  clusterNameExpression: '''default'''
