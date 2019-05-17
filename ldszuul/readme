@@ -1,0 +1,42 @@
+1 在编写filter的时候，注意filter的顺序，不然里面的属性会被其他的filter覆盖，比如控制路由跳转会被PreDecorationFilter覆盖
+2 具体的内容可以阅读源码。
+3 
+
+
+经过测试，所有访问这个路由地址的请求，只有在application.yml中已经匹配到了路径的，才会触发拦截器。7也就是说，在我们定制的和已知的拦截器之前，
+就已经有一个过滤请求性质的东西了。
+
+
+Zuul RequestContext
+To pass information between filters, Zuul uses a RequestContext. Its data is held in a ThreadLocal specific to each request. 
+Information about where to route requests, errors, and the actual HttpServletRequest and HttpServletResponse are stored there. 
+The RequestContext extends ConcurrentHashMap, so anything can be stored in the context. 
+FilterConstants contains the keys used by the filters installed by Spring Cloud Netflix (more on these later).
+
+
+zuul过滤器的几点说明
+过滤器类型分为三种， Pre Filter ， Route Filter ， Post Filter
+
+Pre filters set up data in the RequestContext for use in filters downstream. 
+The main use case is to set information required for route filters.
+
+Route filters run after pre filters and make requests to other services. 
+Much of the work here is to translate request and response data to and from the model required by the client. 
+
+Post filters typically manipulate the response. 
+
+
+超时的配置
+经过实际测试得出，
+ribbon: 
+  eager-load:
+    enabled: true
+  ConnectTimeout: 3000
+  ReadTimeout: 25000
+这里的是在使用eureka下起作用的配置，出此之外其他的配置不起作用，但是最好吃与这里配置一致。
+
+start "动态路由" java -jar -Dspring.profiles.active=dev -Xmx300m ldszuul.jar
+
+增加了yml的profiles之后需要在mvn命令后携带参数，已传递给TEST模块进行测试。
+
+mvn clean package -Dspring.profiles.active=prod
